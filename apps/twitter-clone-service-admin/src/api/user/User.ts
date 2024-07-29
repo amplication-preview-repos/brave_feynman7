@@ -8,6 +8,7 @@ export type User = {
   id: string;
   lastName: string | null;
   likes?: Array<Like>;
+  prenom: string | null;
   roles: JsonValue;
   updatedAt: Date;
   username: string;

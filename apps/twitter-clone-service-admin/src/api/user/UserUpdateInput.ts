@@ -7,6 +7,7 @@ export type UserUpdateInput = {
   lastName?: string | null;
   likes?: LikeUpdateManyWithoutUsersInput;
   password?: string;
+  prenom?: string | null;
   roles?: InputJsonValue;
   username?: string;
 };

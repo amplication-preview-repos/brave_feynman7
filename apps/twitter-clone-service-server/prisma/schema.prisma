@@ -53,6 +53,7 @@ model User {
   lastName  String?
   likes     Like[]
   password  String
+  prenom    String?
   roles     Json
   updatedAt DateTime @updatedAt
   username  String   @unique

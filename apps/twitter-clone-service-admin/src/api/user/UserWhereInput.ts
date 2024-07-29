@@ -8,5 +8,6 @@ export type UserWhereInput = {
   id?: StringFilter;
   lastName?: StringNullableFilter;
   likes?: LikeListRelationFilter;
+  prenom?: StringNullableFilter;
   username?: StringFilter;
 };

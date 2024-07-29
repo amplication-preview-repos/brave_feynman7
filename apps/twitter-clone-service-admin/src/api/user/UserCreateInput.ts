@@ -7,6 +7,7 @@ export type UserCreateInput = {
   lastName?: string | null;
   likes?: LikeCreateNestedManyWithoutUsersInput;
   password: string;
+  prenom?: string | null;
   roles: InputJsonValue;
   username: string;
 };

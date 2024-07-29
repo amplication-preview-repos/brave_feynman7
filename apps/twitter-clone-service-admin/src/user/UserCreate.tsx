@@ -29,6 +29,7 @@ export const UserCreate = (props: CreateProps): React.ReactElement => {
           <SelectArrayInput optionText={LikeTitle} />
         </ReferenceArrayInput>
         <PasswordInput label="Password" source="password" />
+        <TextInput label="prenom" source="prenom" />
         <SelectArrayInput
           source="roles"
           choices={ROLES_OPTIONS}
