@@ -11,8 +11,15 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString, MaxLength, IsOptional } from "class-validator";
+import {
+  IsDate,
+  IsString,
+  MaxLength,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { Mcq } from "../../mcq/base/Mcq";
 
 @ObjectType()
 class Course {
@@ -43,6 +50,15 @@ class Course {
   @IsString()
   @Field(() => String)
   id!: string;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Mcq],
+  })
+  @ValidateNested()
+  @Type(() => Mcq)
+  @IsOptional()
+  mcqs?: Array<Mcq>;
 
   @ApiProperty({
     required: false,

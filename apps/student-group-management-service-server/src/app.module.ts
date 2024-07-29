@@ -1,8 +1,11 @@
 import { Module } from "@nestjs/common";
 import { GroupModule } from "./group/group.module";
-import { StudentModule } from "./student/student.module";
 import { GroupMembershipModule } from "./groupMembership/groupMembership.module";
 import { CourseModule } from "./course/course.module";
+import { StudentModule } from "./student/student.module";
+import { StudentAnswerModule } from "./studentAnswer/studentAnswer.module";
+import { McqModule } from "./mcq/mcq.module";
+import { AnswerOptionModule } from "./answerOption/answerOption.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -16,9 +19,12 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
   controllers: [],
   imports: [
     GroupModule,
-    StudentModule,
     GroupMembershipModule,
     CourseModule,
+    StudentModule,
+    StudentAnswerModule,
+    McqModule,
+    AnswerOptionModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,

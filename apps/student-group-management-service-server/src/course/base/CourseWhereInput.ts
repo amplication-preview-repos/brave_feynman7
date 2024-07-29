@@ -13,8 +13,9 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { IsOptional, ValidateNested } from "class-validator";
 import { StringFilter } from "../../util/StringFilter";
+import { McqListRelationFilter } from "../../mcq/base/McqListRelationFilter";
 
 @InputType()
 class CourseWhereInput {
@@ -39,6 +40,18 @@ class CourseWhereInput {
     nullable: true,
   })
   id?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => McqListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => McqListRelationFilter)
+  @IsOptional()
+  @Field(() => McqListRelationFilter, {
+    nullable: true,
+  })
+  mcqs?: McqListRelationFilter;
 
   @ApiProperty({
     required: false,

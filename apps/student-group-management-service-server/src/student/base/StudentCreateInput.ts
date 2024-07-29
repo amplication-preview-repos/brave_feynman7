@@ -19,6 +19,7 @@ import {
 } from "class-validator";
 import { GroupMembershipCreateNestedManyWithoutStudentsInput } from "./GroupMembershipCreateNestedManyWithoutStudentsInput";
 import { Type } from "class-transformer";
+import { StudentAnswerCreateNestedManyWithoutStudentsInput } from "./StudentAnswerCreateNestedManyWithoutStudentsInput";
 
 @InputType()
 class StudentCreateInput {
@@ -68,6 +69,18 @@ class StudentCreateInput {
     nullable: true,
   })
   lastName?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => StudentAnswerCreateNestedManyWithoutStudentsInput,
+  })
+  @ValidateNested()
+  @Type(() => StudentAnswerCreateNestedManyWithoutStudentsInput)
+  @IsOptional()
+  @Field(() => StudentAnswerCreateNestedManyWithoutStudentsInput, {
+    nullable: true,
+  })
+  studentAnswers?: StudentAnswerCreateNestedManyWithoutStudentsInput;
 }
 
 export { StudentCreateInput as StudentCreateInput };

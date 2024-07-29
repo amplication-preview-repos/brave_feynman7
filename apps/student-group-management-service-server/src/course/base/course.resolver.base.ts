@@ -20,6 +20,8 @@ import { CourseFindUniqueArgs } from "./CourseFindUniqueArgs";
 import { CreateCourseArgs } from "./CreateCourseArgs";
 import { UpdateCourseArgs } from "./UpdateCourseArgs";
 import { DeleteCourseArgs } from "./DeleteCourseArgs";
+import { McqFindManyArgs } from "../../mcq/base/McqFindManyArgs";
+import { Mcq } from "../../mcq/base/Mcq";
 import { CourseService } from "../course.service";
 @graphql.Resolver(() => Course)
 export class CourseResolverBase {
@@ -91,5 +93,19 @@ export class CourseResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [Mcq], { name: "mcqs" })
+  async findMcqs(
+    @graphql.Parent() parent: Course,
+    @graphql.Args() args: McqFindManyArgs
+  ): Promise<Mcq[]> {
+    const results = await this.service.findMcqs(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }

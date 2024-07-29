@@ -11,7 +11,14 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, MaxLength, IsOptional } from "class-validator";
+import {
+  IsString,
+  MaxLength,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
+import { McqCreateNestedManyWithoutCoursesInput } from "./McqCreateNestedManyWithoutCoursesInput";
+import { Type } from "class-transformer";
 
 @InputType()
 class CourseCreateInput {
@@ -26,6 +33,18 @@ class CourseCreateInput {
     nullable: true,
   })
   description?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => McqCreateNestedManyWithoutCoursesInput,
+  })
+  @ValidateNested()
+  @Type(() => McqCreateNestedManyWithoutCoursesInput)
+  @IsOptional()
+  @Field(() => McqCreateNestedManyWithoutCoursesInput, {
+    nullable: true,
+  })
+  mcqs?: McqCreateNestedManyWithoutCoursesInput;
 
   @ApiProperty({
     required: false,

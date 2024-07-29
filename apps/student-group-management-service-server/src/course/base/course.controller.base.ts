@@ -22,6 +22,9 @@ import { Course } from "./Course";
 import { CourseFindManyArgs } from "./CourseFindManyArgs";
 import { CourseWhereUniqueInput } from "./CourseWhereUniqueInput";
 import { CourseUpdateInput } from "./CourseUpdateInput";
+import { McqFindManyArgs } from "../../mcq/base/McqFindManyArgs";
+import { Mcq } from "../../mcq/base/Mcq";
+import { McqWhereUniqueInput } from "../../mcq/base/McqWhereUniqueInput";
 
 export class CourseControllerBase {
   constructor(protected readonly service: CourseService) {}
@@ -135,5 +138,86 @@ export class CourseControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.Get("/:id/mcqs")
+  @ApiNestedQuery(McqFindManyArgs)
+  async findMcqs(
+    @common.Req() request: Request,
+    @common.Param() params: CourseWhereUniqueInput
+  ): Promise<Mcq[]> {
+    const query = plainToClass(McqFindManyArgs, request.query);
+    const results = await this.service.findMcqs(params.id, {
+      ...query,
+      select: {
+        course: {
+          select: {
+            id: true,
+          },
+        },
+
+        createdAt: true,
+        id: true,
+        question: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/mcqs")
+  async connectMcqs(
+    @common.Param() params: CourseWhereUniqueInput,
+    @common.Body() body: McqWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      mcqs: {
+        connect: body,
+      },
+    };
+    await this.service.updateCourse({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/mcqs")
+  async updateMcqs(
+    @common.Param() params: CourseWhereUniqueInput,
+    @common.Body() body: McqWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      mcqs: {
+        set: body,
+      },
+    };
+    await this.service.updateCourse({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/mcqs")
+  async disconnectMcqs(
+    @common.Param() params: CourseWhereUniqueInput,
+    @common.Body() body: McqWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      mcqs: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateCourse({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

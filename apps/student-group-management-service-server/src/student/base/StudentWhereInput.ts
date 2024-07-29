@@ -16,6 +16,7 @@ import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 import { GroupMembershipListRelationFilter } from "../../groupMembership/base/GroupMembershipListRelationFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { StudentAnswerListRelationFilter } from "../../studentAnswer/base/StudentAnswerListRelationFilter";
 
 @InputType()
 class StudentWhereInput {
@@ -74,6 +75,18 @@ class StudentWhereInput {
     nullable: true,
   })
   lastName?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => StudentAnswerListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => StudentAnswerListRelationFilter)
+  @IsOptional()
+  @Field(() => StudentAnswerListRelationFilter, {
+    nullable: true,
+  })
+  studentAnswers?: StudentAnswerListRelationFilter;
 }
 
 export { StudentWhereInput as StudentWhereInput };

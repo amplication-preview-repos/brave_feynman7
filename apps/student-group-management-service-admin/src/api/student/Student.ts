@@ -1,4 +1,5 @@
 import { GroupMembership } from "../groupMembership/GroupMembership";
+import { StudentAnswer } from "../studentAnswer/StudentAnswer";
 
 export type Student = {
   createdAt: Date;
@@ -7,5 +8,6 @@ export type Student = {
   groupMemberships?: Array<GroupMembership>;
   id: string;
   lastName: string | null;
+  studentAnswers?: Array<StudentAnswer>;
   updatedAt: Date;
 };

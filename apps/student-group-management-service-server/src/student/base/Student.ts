@@ -20,6 +20,7 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { GroupMembership } from "../../groupMembership/base/GroupMembership";
+import { StudentAnswer } from "../../studentAnswer/base/StudentAnswer";
 
 @ObjectType()
 class Student {
@@ -82,6 +83,15 @@ class Student {
     nullable: true,
   })
   lastName!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => [StudentAnswer],
+  })
+  @ValidateNested()
+  @Type(() => StudentAnswer)
+  @IsOptional()
+  studentAnswers?: Array<StudentAnswer>;
 
   @ApiProperty({
     required: true,

@@ -22,6 +22,8 @@ import { UpdateStudentArgs } from "./UpdateStudentArgs";
 import { DeleteStudentArgs } from "./DeleteStudentArgs";
 import { GroupMembershipFindManyArgs } from "../../groupMembership/base/GroupMembershipFindManyArgs";
 import { GroupMembership } from "../../groupMembership/base/GroupMembership";
+import { StudentAnswerFindManyArgs } from "../../studentAnswer/base/StudentAnswerFindManyArgs";
+import { StudentAnswer } from "../../studentAnswer/base/StudentAnswer";
 import { StudentService } from "../student.service";
 @graphql.Resolver(() => Student)
 export class StudentResolverBase {
@@ -105,6 +107,20 @@ export class StudentResolverBase {
     @graphql.Args() args: GroupMembershipFindManyArgs
   ): Promise<GroupMembership[]> {
     const results = await this.service.findGroupMemberships(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @graphql.ResolveField(() => [StudentAnswer], { name: "studentAnswers" })
+  async findStudentAnswers(
+    @graphql.Parent() parent: Student,
+    @graphql.Args() args: StudentAnswerFindManyArgs
+  ): Promise<StudentAnswer[]> {
+    const results = await this.service.findStudentAnswers(parent.id, args);
 
     if (!results) {
       return [];

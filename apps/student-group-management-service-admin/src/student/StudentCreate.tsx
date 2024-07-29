@@ -10,6 +10,7 @@ import {
 } from "react-admin";
 
 import { GroupMembershipTitle } from "../groupMembership/GroupMembershipTitle";
+import { StudentAnswerTitle } from "../studentAnswer/StudentAnswerTitle";
 
 export const StudentCreate = (props: CreateProps): React.ReactElement => {
   return (
@@ -26,6 +27,14 @@ export const StudentCreate = (props: CreateProps): React.ReactElement => {
           <SelectArrayInput optionText={GroupMembershipTitle} />
         </ReferenceArrayInput>
         <TextInput label="lastName" source="lastName" />
+        <ReferenceArrayInput
+          source="studentAnswers"
+          reference="StudentAnswer"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
+        >
+          <SelectArrayInput optionText={StudentAnswerTitle} />
+        </ReferenceArrayInput>
       </SimpleForm>
     </Create>
   );

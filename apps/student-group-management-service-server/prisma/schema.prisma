@@ -16,16 +16,6 @@ model Group {
   updatedAt        DateTime          @updatedAt
 }
 
-model Student {
-  createdAt        DateTime          @default(now())
-  email            String?
-  firstName        String?
-  groupMemberships GroupMembership[]
-  id               String            @id @default(cuid())
-  lastName         String?
-  updatedAt        DateTime          @updatedAt
-}
-
 model GroupMembership {
   createdAt DateTime @default(now())
   group     Group?   @relation(fields: [groupId], references: [id])
@@ -40,6 +30,51 @@ model Course {
   createdAt   DateTime @default(now())
   description String?
   id          String   @id @default(cuid())
+  mcqs        Mcq[]
   name        String?
   updatedAt   DateTime @updatedAt
+}
+
+model Student {
+  createdAt        DateTime          @default(now())
+  email            String?
+  firstName        String?
+  groupMemberships GroupMembership[]
+  id               String            @id @default(cuid())
+  lastName         String?
+  studentAnswers   StudentAnswer[]
+  updatedAt        DateTime          @updatedAt
+}
+
+model StudentAnswer {
+  answerDate     DateTime?
+  createdAt      DateTime  @default(now())
+  id             String    @id @default(cuid())
+  mcq            Mcq?      @relation(fields: [mcqId], references: [id])
+  mcqId          String?
+  selectedOption String?
+  student        Student?  @relation(fields: [studentId], references: [id])
+  studentId      String?
+  updatedAt      DateTime  @updatedAt
+}
+
+model Mcq {
+  answerOptions  AnswerOption[]
+  course         Course?         @relation(fields: [courseId], references: [id])
+  courseId       String?
+  createdAt      DateTime        @default(now())
+  id             String          @id @default(cuid())
+  question       String?
+  studentAnswers StudentAnswer[]
+  updatedAt      DateTime        @updatedAt
+}
+
+model AnswerOption {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  isCorrect Boolean?
+  mcq       Mcq?     @relation(fields: [mcqId], references: [id])
+  mcqId     String?
+  text      String?
+  updatedAt DateTime @updatedAt
 }

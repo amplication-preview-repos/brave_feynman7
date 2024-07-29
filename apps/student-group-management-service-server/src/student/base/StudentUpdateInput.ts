@@ -19,6 +19,7 @@ import {
 } from "class-validator";
 import { GroupMembershipUpdateManyWithoutStudentsInput } from "./GroupMembershipUpdateManyWithoutStudentsInput";
 import { Type } from "class-transformer";
+import { StudentAnswerUpdateManyWithoutStudentsInput } from "./StudentAnswerUpdateManyWithoutStudentsInput";
 
 @InputType()
 class StudentUpdateInput {
@@ -68,6 +69,18 @@ class StudentUpdateInput {
     nullable: true,
   })
   lastName?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => StudentAnswerUpdateManyWithoutStudentsInput,
+  })
+  @ValidateNested()
+  @Type(() => StudentAnswerUpdateManyWithoutStudentsInput)
+  @IsOptional()
+  @Field(() => StudentAnswerUpdateManyWithoutStudentsInput, {
+    nullable: true,
+  })
+  studentAnswers?: StudentAnswerUpdateManyWithoutStudentsInput;
 }
 
 export { StudentUpdateInput as StudentUpdateInput };

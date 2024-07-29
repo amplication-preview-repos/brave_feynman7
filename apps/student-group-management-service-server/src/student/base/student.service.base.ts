@@ -10,10 +10,12 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
+
 import {
   Prisma,
   Student as PrismaStudent,
   GroupMembership as PrismaGroupMembership,
+  StudentAnswer as PrismaStudentAnswer,
 } from "@prisma/client";
 
 export class StudentServiceBase {
@@ -50,5 +52,16 @@ export class StudentServiceBase {
         where: { id: parentId },
       })
       .groupMemberships(args);
+  }
+
+  async findStudentAnswers(
+    parentId: string,
+    args: Prisma.StudentAnswerFindManyArgs
+  ): Promise<PrismaStudentAnswer[]> {
+    return this.prisma.student
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .studentAnswers(args);
   }
 }

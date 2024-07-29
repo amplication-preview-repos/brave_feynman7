@@ -25,6 +25,9 @@ import { StudentUpdateInput } from "./StudentUpdateInput";
 import { GroupMembershipFindManyArgs } from "../../groupMembership/base/GroupMembershipFindManyArgs";
 import { GroupMembership } from "../../groupMembership/base/GroupMembership";
 import { GroupMembershipWhereUniqueInput } from "../../groupMembership/base/GroupMembershipWhereUniqueInput";
+import { StudentAnswerFindManyArgs } from "../../studentAnswer/base/StudentAnswerFindManyArgs";
+import { StudentAnswer } from "../../studentAnswer/base/StudentAnswer";
+import { StudentAnswerWhereUniqueInput } from "../../studentAnswer/base/StudentAnswerWhereUniqueInput";
 
 export class StudentControllerBase {
   constructor(protected readonly service: StudentService) {}
@@ -225,6 +228,96 @@ export class StudentControllerBase {
   ): Promise<void> {
     const data = {
       groupMemberships: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateStudent({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Get("/:id/studentAnswers")
+  @ApiNestedQuery(StudentAnswerFindManyArgs)
+  async findStudentAnswers(
+    @common.Req() request: Request,
+    @common.Param() params: StudentWhereUniqueInput
+  ): Promise<StudentAnswer[]> {
+    const query = plainToClass(StudentAnswerFindManyArgs, request.query);
+    const results = await this.service.findStudentAnswers(params.id, {
+      ...query,
+      select: {
+        answerDate: true,
+        createdAt: true,
+        id: true,
+
+        mcq: {
+          select: {
+            id: true,
+          },
+        },
+
+        selectedOption: true,
+
+        student: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/studentAnswers")
+  async connectStudentAnswers(
+    @common.Param() params: StudentWhereUniqueInput,
+    @common.Body() body: StudentAnswerWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      studentAnswers: {
+        connect: body,
+      },
+    };
+    await this.service.updateStudent({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/studentAnswers")
+  async updateStudentAnswers(
+    @common.Param() params: StudentWhereUniqueInput,
+    @common.Body() body: StudentAnswerWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      studentAnswers: {
+        set: body,
+      },
+    };
+    await this.service.updateStudent({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/studentAnswers")
+  async disconnectStudentAnswers(
+    @common.Param() params: StudentWhereUniqueInput,
+    @common.Body() body: StudentAnswerWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      studentAnswers: {
         disconnect: body,
       },
     };
