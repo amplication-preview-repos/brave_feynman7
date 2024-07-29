@@ -1,0 +1,45 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Group {
+  createdAt        DateTime          @default(now())
+  description      String?
+  groupMemberships GroupMembership[]
+  id               String            @id @default(cuid())
+  name             String?
+  updatedAt        DateTime          @updatedAt
+}
+
+model Student {
+  createdAt        DateTime          @default(now())
+  email            String?
+  firstName        String?
+  groupMemberships GroupMembership[]
+  id               String            @id @default(cuid())
+  lastName         String?
+  updatedAt        DateTime          @updatedAt
+}
+
+model GroupMembership {
+  createdAt DateTime @default(now())
+  group     Group?   @relation(fields: [groupId], references: [id])
+  groupId   String?
+  id        String   @id @default(cuid())
+  student   Student? @relation(fields: [studentId], references: [id])
+  studentId String?
+  updatedAt DateTime @updatedAt
+}
+
+model Course {
+  createdAt   DateTime @default(now())
+  description String?
+  id          String   @id @default(cuid())
+  name        String?
+  updatedAt   DateTime @updatedAt
+}
